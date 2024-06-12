@@ -1,5 +1,5 @@
 const resultArea = document.querySelector("#result");
-const buttonsArea = document.querySelector("#buttons");
+const numberArea = document.querySelector("#numbers");
 const operatorBtns = document.querySelectorAll(".operators");
 
 let firsNum = 0;
@@ -27,31 +27,36 @@ const divide = function () {};
 
 const operate = function (num1, operator, num2) {};
 
-buttonsArea.addEventListener("click", display);
+numberArea.addEventListener("click", display);
 
 operatorBtns.forEach((operatorBtn) => {
   operatorBtn.addEventListener("click", (e) => {
-    console.log(e.target.innerText);
     switch (e.target.innerText) {
       case "+":
         operator = add;
+        firsNum += parseInt(displayValue);
         console.log(operator);
+        console.log(`firsNum: ${firsNum}, secondNum: ${secondNum}`);
         break;
       case "-":
         operator = subtract;
         console.log(operator);
+        console.log(`firsNum: ${firsNum}, secondNum: ${secondNum}`);
         break;
       case "*":
         operator = multiply;
         console.log(operator);
+        console.log(`firsNum: ${firsNum}, secondNum: ${secondNum}`);
         break;
       case "/":
         operator = divide;
         console.log(operator);
+        console.log(`firsNum: ${firsNum}, secondNum: ${secondNum}`);
         break;
       case "=":
         operator = operate;
-        console.log(operator(1, 2, 3));
+        console.log(operator);
+        console.log(`firsNum: ${firsNum}, secondNum: ${secondNum}`);
         break;
     }
   });

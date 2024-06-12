@@ -1,3 +1,12 @@
+:root {
+  --operator-bg-color: hsl(27, 100%, 50%);
+  --operator-bg-color-hover: hsl(27, 100%, 60%);
+  --special-bg-color: hsl(0, 0%, 50%);
+  --special-bg-color-hover: hsl(0, 0%, 60%);
+  --numbers-bg-color: hsl(0, 0%, 80%);
+  --numbers-bg-color-hover: hsl(0, 0%, 70%);
+}
+
 *,
 *::before,
 *::after {
@@ -34,12 +43,18 @@ h6 {
   overflow-wrap: break-word;
 }
 
+button {
+  cursor: pointer;
+  border: 1px solid black;
+  height: 65px;
+  font-size: 32px;
+  width: 100%;
+}
 main {
   display: flex;
   width: 100vw;
   height: 100vh;
   align-items: center;
-  flex-grow: 0;
 }
 #calculator {
   width: min(100% - 20px, 320px);
@@ -57,26 +72,41 @@ main {
 }
 #buttons {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: 3fr 1fr;
+  grid-template-rows: repeat(5, 1fr);
 }
-
-#buttons button:first-child,
-#buttons button:nth-last-child(2) {
-  grid-column: 1 / 4;
+#specials {
+  grid-column: 1/2;
+  grid-row: 1/2;
 }
-
-#buttons > button {
-  width: 100%;
-  height: 70px;
-  font-size: 24px;
-  cursor: pointer;
-  border: 1px solid black;
+#specials button {
+  background-color: var(--special-bg-color);
 }
-
-.special {
-  background-color: #ff8400ff;
+#specials button:hover {
+  background-color: var(--special-bg-color-hover);
 }
-
-.special:hover {
-  background-color: orangered;
+#numbers {
+  grid-column: 1/2;
+  grid-row: 2/-1;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+#numbers button:nth-last-child(1) {
+  grid-column: 1/4;
+}
+#numbers button {
+  background-color: var(--numbers-bg-color);
+}
+#numbers button:hover {
+  background-color: var(--numbers-bg-color-hover);
+}
+#operators {
+  grid-column: 2/3;
+  grid-row: 1/-1;
+}
+#operators button {
+  background-color: var(--operator-bg-color);
+}
+#operators button:hover {
+  background-color: var(--operator-bg-color-hover);
 }
