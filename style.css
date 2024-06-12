@@ -5,6 +5,7 @@
   --special-bg-color-hover: hsl(0, 0%, 60%);
   --numbers-bg-color: hsl(0, 0%, 80%);
   --numbers-bg-color-hover: hsl(0, 0%, 70%);
+  --selected-bg-color: hsl(27, 100%, 70%);
 }
 
 *,
@@ -109,4 +110,8 @@ main {
 }
 #operators button:hover {
   background-color: var(--operator-bg-color-hover);
+}
+
+#operators .selected {
+  background-color: var(--selected-bg-color) !important;
 }
