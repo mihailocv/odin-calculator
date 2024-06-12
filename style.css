@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+
 :root {
   --operator-bg-color: hsl(27, 100%, 50%);
   --operator-bg-color-hover: hsl(27, 100%, 60%);
@@ -17,6 +19,7 @@
   margin: 0;
 }
 body {
+  font-family: "Open Sans", sans-serif;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
 }
@@ -50,6 +53,7 @@ button {
   height: 65px;
   font-size: 32px;
   width: 100%;
+  color: black;
 }
 main {
   display: flex;
@@ -58,7 +62,7 @@ main {
   align-items: center;
 }
 #calculator {
-  width: min(100% - 20px, 320px);
+  width: min(100% - 12px, 320px);
   margin-inline: auto;
   background-color: black;
 }
@@ -75,6 +79,7 @@ main {
   display: grid;
   grid-template-columns: 3fr 1fr;
   grid-template-rows: repeat(5, 1fr);
+  overflow: hidden;
 }
 #specials {
   grid-column: 1/2;
