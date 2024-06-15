@@ -98,3 +98,6 @@ button:hover {
 .button__special:hover {
   background-color: var(--special-bg-color-hover);
 }
+.active{
+  background-color: var(--operator-bg-color-hover);
+}
