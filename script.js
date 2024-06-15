@@ -3,14 +3,16 @@ const numberArea = document.querySelector("#numbers");
 const operatorArea = document.querySelector("#operators");
 const specialArea = document.querySelector("#specials");
 
-let firsNum = 0;
-let secondNum = 0;
+let firsNum = null;
+let secondNum = null;
 let operator = null;
 let displayValue = "";
 
 function display(button) {
   let target = button.target.innerText;
-  displayValue += target;
+  if (displayValue.length !== 9) {
+    displayValue += target;
+  }
   resultArea.textContent = displayValue;
 }
 
@@ -34,14 +36,18 @@ const operate = function (num1, operator, num2) {
   return operator(num1, num2);
 };
 
-numberArea.addEventListener("click", display);
+numberArea.addEventListener("click", (e) => {
+  if (e.target.matches("button")) {
+    display(e);
+  }
+});
 
 operatorArea.addEventListener("click", (e) => {
   let target = e.target;
   switch (target.innerText) {
     case "+":
       operator = add;
-      firsNum += parseInt(displayValue);
+      firsNum = parseInt(displayValue);
       resultArea.textContent = firsNum;
       displayValue = "";
       break;
@@ -65,7 +71,7 @@ operatorArea.addEventListener("click", (e) => {
       break;
     case "=":
       if (operator !== null) {
-        secondNum += parseInt(displayValue);
+        secondNum = parseInt(displayValue);
         resultArea.textContent = operate(firsNum, operator, secondNum);
       }
       break;
@@ -78,7 +84,7 @@ specialArea.addEventListener("click", (e) => {
     resultArea.textContent = "0";
     displayValue = "";
     operator = null;
-    firsNum = 0;
-    secondNum = 0;
+    firsNum = null;
+    secondNum = null;
   }
 });
