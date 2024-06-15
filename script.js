@@ -18,6 +18,21 @@ function displayNumbers(e) {
     }
     display.textContent = numOnDisplay;
   }
+  console.log(numOnDisplay);
+}
+function clearDisplay() {
+  display.textContent = "0";
+  numOnDisplay = display.textContent;
+
+  console.log(numOnDisplay);
+}
+function addDecimalPoint() {
+  if (!numOnDisplay.includes(".")) {
+    numOnDisplay += ".";
+    display.textContent = numOnDisplay;
+  }
+
+  console.log(numOnDisplay);
 }
 
 // const add = function (num1, num2) {
@@ -62,12 +77,13 @@ buttons.addEventListener("click", (e) => {
       console.log(operator);
     }
     if (action === "clear") {
-      console.log("I'm clear button!");
+      clearDisplay();
     }
     if (action === "decimal") {
-      if (!numOnDisplay.includes(",")) {
-        display.textContent = numOnDisplay + targetContent;
-      }
+      addDecimalPoint(e);
+      // if (!numOnDisplay.includes(",")) {
+      //   display.textContent = numOnDisplay + targetContent;
+      // }
     }
     if (action === "equal") {
       console.log("I'm equal button!");
