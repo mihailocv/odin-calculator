@@ -1,41 +1,38 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <link rel="stylesheet" href="style.css">
+  <head>
+    <link rel="stylesheet" href="style.css" />
     <script defer src="script.js"></script>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8" />
     <title>Calculator</title>
-</head>
-<body>
-<main>
-    <div id="calculator">
-        <div id="result">0</div>
-        <div id="buttons">
-            <div id="numbers">
-                <button>7</button>
-                <button>8</button>
-                <button>9</button>
-                <button>4</button>
-                <button>5</button>
-                <button>6</button>
-                <button>1</button>
-                <button>2</button>
-                <button>3</button>
-                <button>0</button>
-            </div>
-            <div id="specials">
-                <button>C</button>
-            </div>
-            <div id="operators">
-                <button>/</button>
-                <button>*</button>
-                <button>-</button>
-                <button>+</button>
-                <button>=</button>
-            </div>
+  </head>
+  <body>
+    <main>
+      <div class="calculator">
+        <div class="calculator__display">0</div>
+        <div class="calculator__buttons">
+          <button class="button__special" data-action="clear">AC</button>
+          <button class="button__special" data-action="prefix"></button>
+          <button class="button__special" data-action="percent"></button>
+          <button class="button__operator" data-action="divide">/</button>
+          <button>7</button>
+          <button>8</button>
+          <button>9</button>
+          <button class="button__operator" data-action="multiply">*</button>
+          <button>4</button>
+          <button>5</button>
+          <button>6</button>
+          <button class="button__operator" data-action="subtract">-</button>
+          <button>1</button>
+          <button>2</button>
+          <button>3</button>
+          <button class="button__operator" data-action="add">+</button>
+          <button class="span-two">0</button>
+          <button data-action="decimal">.</button>
+          <button class="button__operator" data-action="equal">=</button>
         </div>
-    </div>
-</main>
-</body>
+      </div>
+    </main>
+  </body>
 </html>

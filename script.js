@@ -1,90 +1,114 @@
-const resultArea = document.querySelector("#result");
-const numberArea = document.querySelector("#numbers");
-const operatorArea = document.querySelector("#operators");
-const specialArea = document.querySelector("#specials");
+const calculator = document.querySelector(".calculator");
+const display = document.querySelector(".calculator__display");
+const buttons = document.querySelector(".calculator__buttons");
 
-let firsNum = null;
-let secondNum = null;
-let operator = null;
-let displayValue = "";
+const calculate = (num1, operator, num2) => {
+  let result = "";
 
-function display(button) {
-  let target = button.target.innerText;
-  if (displayValue.length !== 9) {
-    displayValue += target;
+  if (operator === "add") {
+    result = parseFloat(num1) + parseFloat(num2);
+  } else if (operator === "subtract") {
+    result = parseFloat(num1) - parseFloat(num2);
+  } else if (operator === "multiply") {
+    result = parseFloat(num1) * parseFloat(num2);
+  } else if (operator === "divide") {
+    result = parseFloat(num1) / parseFloat(num2);
   }
-  resultArea.textContent = displayValue;
-}
-
-const add = function (num1, num2) {
-  return num1 + num2;
+  return result;
 };
 
-const subtract = function (num1, num2) {
-  return num1 - num2;
-};
-
-const multiply = function (num1, num2) {
-  return num1 * num2;
-};
-
-const divide = function (num1, num2) {
-  return num2 !== 0 ? num1 / num2 : "ERROR!";
-};
-
-const operate = function (num1, operator, num2) {
-  return operator(num1, num2);
-};
-
-numberArea.addEventListener("click", (e) => {
+buttons.addEventListener("click", (e) => {
   if (e.target.matches("button")) {
-    display(e);
-  }
-});
+    const target = e.target;
+    const action = target.dataset.action;
+    const targetContent = target.textContent;
+    const numOnDisplay = display.textContent;
+    const previousKeyType = calculator.dataset.previousKeyType;
 
-operatorArea.addEventListener("click", (e) => {
-  let target = e.target;
-  switch (target.innerText) {
-    case "+":
-      operator = add;
-      firsNum = parseInt(displayValue);
-      resultArea.textContent = firsNum;
-      displayValue = "";
-      break;
-    case "-":
-      operator = subtract;
-      firsNum = parseInt(displayValue);
-      resultArea.textContent = firsNum;
-      displayValue = "";
-      break;
-    case "*":
-      operator = multiply;
-      firsNum = parseInt(displayValue);
-      resultArea.textContent = firsNum;
-      displayValue = "";
-      break;
-    case "/":
-      operator = divide;
-      firsNum = parseInt(displayValue);
-      resultArea.textContent = firsNum;
-      displayValue = "";
-      break;
-    case "=":
-      if (operator !== null) {
-        secondNum = parseInt(displayValue);
-        resultArea.textContent = operate(firsNum, operator, secondNum);
+    if (!action) {
+      if (
+        numOnDisplay === "0" ||
+        previousKeyType === "operator" ||
+        previousKeyType === "equal"
+      ) {
+        display.textContent = targetContent;
+      } else {
+        display.textContent = numOnDisplay + targetContent;
       }
-      break;
-  }
-});
+      calculator.dataset.previousKeyType = "number";
+    }
 
-specialArea.addEventListener("click", (e) => {
-  let target = e.target.innerText;
-  if (target === "C") {
-    resultArea.textContent = "0";
-    displayValue = "";
-    operator = null;
-    firsNum = null;
-    secondNum = null;
+    if (
+      action === "divide" ||
+      action === "multiply" ||
+      action === "subtract" ||
+      action === "add"
+    ) {
+      const firstNumber = calculator.dataset.firstNumber;
+      const operator = calculator.dataset.operator;
+      if (
+        firstNumber &&
+        operator &&
+        previousKeyType !== "operator" &&
+        previousKeyType !== "equal"
+      ) {
+        const calcValue = calculate(firstNumber, operator, numOnDisplay);
+        display.textContent = calcValue;
+        calculator.dataset.firstNumber = calcValue;
+      } else {
+        calculator.dataset.firstNumber = numOnDisplay;
+      }
+      target.classList.add("is-depressed");
+      calculator.dataset.previousKeyType = "operator";
+      calculator.dataset.operator = action;
+    }
+
+    if (action === "clear") {
+      if (target.textContent === "AC") {
+        calculator.dataset.firstNumber = "";
+        calculator.dataset.modValue = "";
+        calculator.dataset.operator = "";
+        calculator.dataset.previousKeyType = "";
+      } else {
+        target.textContent = "AC";
+      }
+      display.textContent = "0";
+      calculator.dataset.previousKeyType = "clear";
+    }
+
+    if (action !== "clear") {
+      const clearButton = calculator.querySelector("[data-action=clear]");
+      clearButton.textContent = "CE";
+    }
+
+    if (action === "decimal") {
+      if (!numOnDisplay.includes(".")) {
+        display.textContent = numOnDisplay + ".";
+      } else if (
+        previousKeyType === "operator" ||
+        previousKeyType === "equal"
+      ) {
+        display.textContent = "0,";
+      }
+      calculator.dataset.previousKeyType = "decimal";
+    }
+
+    if (action === "equal") {
+      let firstNumber = calculator.dataset.firstNumber;
+      const operator = calculator.dataset.operator;
+      let secondNumber = numOnDisplay;
+      if (firstNumber) {
+        if (previousKeyType === "equal") {
+          firstNumber = numOnDisplay;
+          secondNumber = calculator.dataset.modValue;
+        }
+        display.textContent = calculate(firstNumber, operator, secondNumber);
+      }
+      calculator.dataset.modValue = secondNumber;
+      calculator.dataset.previousKeyType = "equal";
+    }
+    Array.from(target.parentNode.children).forEach((t) =>
+      t.classList.remove("is-depressed"),
+    );
   }
 });
