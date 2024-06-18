@@ -46,14 +46,13 @@ buttons.addEventListener("click", (e) => {
     ) {
       const firstNumber = calculator.dataset.firstNumber;
       const operator = calculator.dataset.operator;
-      const secondNumber = numOnDisplay;
       if (
         firstNumber &&
         operator &&
         previousKeyType !== "operator" &&
         previousKeyType !== "equal"
       ) {
-        const calcValue = calculate(firstNumber, operator, secondNumber);
+        const calcValue = calculate(firstNumber, operator, numOnDisplay);
         display.textContent = calcValue;
         calculator.dataset.firstNumber = calcValue;
       } else {
@@ -83,8 +82,8 @@ buttons.addEventListener("click", (e) => {
     }
 
     if (action === "decimal") {
-      if (!numOnDisplay.includes(",")) {
-        display.textContent = numOnDisplay + ",";
+      if (!numOnDisplay.includes(".")) {
+        display.textContent = numOnDisplay + ".";
       } else if (
         previousKeyType === "operator" ||
         previousKeyType === "equal"
