@@ -2,58 +2,20 @@ const calculator = document.querySelector(".calculator");
 const display = document.querySelector(".calculator__display");
 const buttons = document.querySelector(".calculator__buttons");
 
-// let firsNum = null;
-// let secondNum = null;
-// let operator = null;
-// let displayValue = "";
-let numOnDisplay = display.textContent;
+const calculate = (num1, operator, num2) => {
+  let result = "";
 
-function displayNumbers(e) {
-  const targetContent = e.target.textContent;
-  if (numOnDisplay.length < 9) {
-    if (numOnDisplay === "0") {
-      numOnDisplay = targetContent;
-    } else {
-      numOnDisplay += targetContent;
-    }
-    display.textContent = numOnDisplay;
+  if (operator === "add") {
+    result = parseFloat(num1) + parseFloat(num2);
+  } else if (operator === "subtract") {
+    result = parseFloat(num1) - parseFloat(num2);
+  } else if (operator === "multiply") {
+    result = parseFloat(num1) * parseFloat(num2);
+  } else if (operator === "divide") {
+    result = parseFloat(num1) / parseFloat(num2);
   }
-  console.log(numOnDisplay);
-}
-function clearDisplay() {
-  display.textContent = "0";
-  numOnDisplay = display.textContent;
-
-  console.log(numOnDisplay);
-}
-function addDecimalPoint() {
-  if (!numOnDisplay.includes(".")) {
-    numOnDisplay += ".";
-    display.textContent = numOnDisplay;
-  }
-
-  console.log(numOnDisplay);
-}
-
-// const add = function (num1, num2) {
-//   return num1 + num2;
-// };
-//
-// const subtract = function (num1, num2) {
-//   return num1 - num2;
-// };
-//
-// const multiply = function (num1, num2) {
-//   return num1 * num2;
-// };
-//
-// const divide = function (num1, num2) {
-//   return num2 !== 0 ? num1 / num2 : "ERROR!";
-// };
-//
-// const operate = function (num1, operator, num2) {
-//   return operator(num1, num2);
-// };
+  return result;
+};
 
 buttons.addEventListener("click", (e) => {
   if (e.target.matches("button")) {
@@ -61,82 +23,93 @@ buttons.addEventListener("click", (e) => {
     const action = target.dataset.action;
     const targetContent = target.textContent;
     const numOnDisplay = display.textContent;
-    let operator = null;
+    const previousKeyType = calculator.dataset.previousKeyType;
 
     if (!action) {
-      displayNumbers(e);
+      if (
+        numOnDisplay === "0" ||
+        previousKeyType === "operator" ||
+        previousKeyType === "equal"
+      ) {
+        display.textContent = targetContent;
+      } else {
+        display.textContent = numOnDisplay + targetContent;
+      }
+      calculator.dataset.previousKeyType = "number";
     }
+
     if (
       action === "divide" ||
       action === "multiply" ||
       action === "subtract" ||
       action === "add"
     ) {
-      target.classList.add("active");
-      operator = action;
-      console.log(operator);
+      const firstNumber = calculator.dataset.firstNumber;
+      const operator = calculator.dataset.operator;
+      const secondNumber = numOnDisplay;
+      if (
+        firstNumber &&
+        operator &&
+        previousKeyType !== "operator" &&
+        previousKeyType !== "equal"
+      ) {
+        const calcValue = calculate(firstNumber, operator, secondNumber);
+        display.textContent = calcValue;
+        calculator.dataset.firstNumber = calcValue;
+      } else {
+        calculator.dataset.firstNumber = numOnDisplay;
+      }
+      target.classList.add("is-depressed");
+      calculator.dataset.previousKeyType = "operator";
+      calculator.dataset.operator = action;
     }
+
     if (action === "clear") {
-      clearDisplay();
+      if (target.textContent === "AC") {
+        calculator.dataset.firstNumber = "";
+        calculator.dataset.modValue = "";
+        calculator.dataset.operator = "";
+        calculator.dataset.previousKeyType = "";
+      } else {
+        target.textContent = "AC";
+      }
+      display.textContent = "0";
+      calculator.dataset.previousKeyType = "clear";
     }
+
+    if (action !== "clear") {
+      const clearButton = calculator.querySelector("[data-action=clear]");
+      clearButton.textContent = "CE";
+    }
+
     if (action === "decimal") {
-      addDecimalPoint(e);
-      // if (!numOnDisplay.includes(",")) {
-      //   display.textContent = numOnDisplay + targetContent;
-      // }
+      if (!numOnDisplay.includes(",")) {
+        display.textContent = numOnDisplay + ",";
+      } else if (
+        previousKeyType === "operator" ||
+        previousKeyType === "equal"
+      ) {
+        display.textContent = "0,";
+      }
+      calculator.dataset.previousKeyType = "decimal";
     }
+
     if (action === "equal") {
-      console.log("I'm equal button!");
+      let firstNumber = calculator.dataset.firstNumber;
+      const operator = calculator.dataset.operator;
+      let secondNumber = numOnDisplay;
+      if (firstNumber) {
+        if (previousKeyType === "equal") {
+          firstNumber = numOnDisplay;
+          secondNumber = calculator.dataset.modValue;
+        }
+        display.textContent = calculate(firstNumber, operator, secondNumber);
+      }
+      calculator.dataset.modValue = secondNumber;
+      calculator.dataset.previousKeyType = "equal";
     }
     Array.from(target.parentNode.children).forEach((t) =>
-      t.classList.remove("active"),
+      t.classList.remove("is-depressed"),
     );
   }
 });
-
-// operatorArea.addEventListener("click", (e) => {
-//   let target = e.target;
-//   switch (target.innerText) {
-//     case "+":
-//       operator = add;
-//       firsNum = parseInt(displayValue);
-//       resultArea.textContent = firsNum;
-//       displayValue = "";
-//       break;
-//     case "-":
-//       operator = subtract;
-//       firsNum = parseInt(displayValue);
-//       resultArea.textContent = firsNum;
-//       displayValue = "";
-//       break;
-//     case "*":
-//       operator = multiply;
-//       firsNum = parseInt(displayValue);
-//       resultArea.textContent = firsNum;
-//       displayValue = "";
-//       break;
-//     case "/":
-//       operator = divide;
-//       firsNum = parseInt(displayValue);
-//       resultArea.textContent = firsNum;
-//       displayValue = "";
-//       break;
-//     case "=":
-//       if (operator !== null) {
-//         secondNum = parseInt(displayValue);
-//         resultArea.textContent = operate(firsNum, operator, secondNum);
-//       }
-//       break;
-//   }
-// });
-//
-// specialArea.addEventListener("click", (e) => {
-//   let target = e.target.innerText;
-//   if (target === "C") {
-//     resultArea.textContent = "0";
-//     displayValue = "";
-//     operator = null;
-//     firsNum = null;
-//     secondNum = null;
-//   }
-// });
